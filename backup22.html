@@ -1,0 +1,420 @@
+<!doctype html>
+        <head>
+              <title>Time Chat</title>
+			<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+			<script src="/socket.io/socket.io.js"></script>
+			<script>
+			//"https://thewallpaper.co//wp-content/uploads/2016/10/love-wallpaper-for-desktop-full-screen-hd-background-wallpapers-free-amazing-cool-tablet-smart-phone-4k-high-definition-1920x1200.jpg",
+			//"https://thewallpaper.co//wp-content/uploads/2016/01preview/1920x1080-beach-wallpaper.jpg",
+			//"https://www.bestfunforall.com/better/imgs/Green%20Forest%20High%20Resolution%20wallpaper%20%201.jpg",
+			//"https://thewallpaper.co//wp-content/uploads/2017/10/landscapesdownload-view-tablet-display-reflections-nature-mountains.jpg",
+			//"https://thewallpaper.co//wp-content/uploads/2017/10/forest-sunset-mountains-color-sunrise-landscape-nature.jpg"
+			//https://ci5.googleusercontent.com/proxy/PKJJcd6_nML75S5o1XraaQeFm7-iF63SDFmjrliHxzCYJ5ZbXm48lOj16FVORIxR_v3bj6B-CKDQDdNuxru86uSvnOxKm0SYb62y1JXJT93EK1lMVbssXj2SNdRfFVBO40FK5nOFtrD19cgCeNRhFuBW0xw=s0-d-e1-ft#https://www.brandcrowd.com/maker/asset/draft/01904650-aa3d-4c1b-b747-30591a73d80b/image/large.png
+			var backgroundSlides = new Array("C:/UsersOmDownloads/jsp1.jpg","C:/Users/Om/Downloads/jsp2.jpg","C:/Users/Om/Downloads/jsp3.jpg","C:/Users/Om/Downloads/jsp4.jpg","C:/Users/Om/Downloads/jsp5.jpg");
+			var currentSlide = 0;
+			function runSlide() {
+			currentSlide = currentSlide + 1;
+			if (document.images) {
+			if (currentSlide > (backgroundSlides.length - 1)) {
+			currentSlide = 0;
+			}
+			} else {
+			currentSlide = backgroundSlides.length - 1;
+			}
+			document.body.background=backgroundSlides[currentSlide];
+			setTimeout(runSlide,8000);
+			}
+				$(document).ready(function(){
+				$("#clear").click(function(){
+				$("#chat").empty("slow");
+				});
+				});
+				
+				$(document).ready(function(){
+				$("#show").click(function(){
+				$("textarea").show("slow");	
+				});
+				});
+				
+				$(document).ready(function(){
+				$("#hide").click(function(){
+				$("textarea").fadeToggle("slow");
+				});
+				});
+				
+			</script>
+        </head>       
+<body onload="runSlide()">
+
+<div id="mySide" class="side">
+  <a href="#" id="up" onclick="showl()">Scroll Up</a>
+  <a href="#" id="delete1" onclick="Enlarge()">Enlarge</a>
+  <a href="#" id="delete2" onclick="Restore()">Original</a>
+  <a href="#" id="delete3" onclick="vd.play()">Play Again</a>
+</div>
+<div id="mySidenav" class="sidenav">
+  <a href="#" id="clear">Clear Chat</a>
+  <a href="#" id="hide">Hide Chat</a>
+  <a href="#" id="show">Show Chat</a>
+  <a href="#" id="emoji">Insert Emoji</a>
+</div>
+
+<div id="memechat"><img src="C:/Users/Om/Downloads/unnamed.png" height="200" width="250" style="border-radius: 90px;"/>
+</div>
+<br>
+<br>
+<div id="holder">	
+        <form id="messageForm">
+					<input type="text" id="messageInput" placeholder="Convey..."/>
+					<audio id="audio1" src="C:/Users/Om/Downloads/n1.mp3" type="audio/mp3"></audio>
+					<audio id="audio2" src="C:/Users/Om/Downloads/n2.mp3" type="audio/mp3"></audio>	
+					<button type="submit" id="btn" onclick="hidel()"> Send </button>
+					<!--<input type="file" id="aud" value="sam" size="2">-->
+					<input type="button" id="btn1" onclick="transfer1()" value="Send  Image">
+					<input type="button" id="btn2" onclick="transfer2()" value="Send  Video">
+					
+        </form>
+        <div class="chat" id="chat" style="overflow-y:scroll; height:450px;"></div>
+	   <div id="messageBox"></div>
+
+</div>
+</body>
+<script>
+
+var $test2 = '0';	//decide image or video
+var $test3 = '0';
+var vd;
+$(function(){
+
+var socket = io.connect();  //connects to socket
+var $messageForm = $("#messageForm"); //ref to the div message form
+var $messageInput = $("#messageInput"); //ref to input box with id message
+var $chat = $("#chat"); //ref to div chat
+var test = $messageInput.val("");
+$messageForm.submit(function(e){
+e.preventDefault();
+socket.emit("send meme message", $messageInput.val());
+$messageInput.val("");
+});
+
+socket.on("new meme message", function(data){
+var d=new Date;	var ap;	
+ap=d.getHours()>12?'pm':'am';
+if(data.msg.length > 0){	
+var ad = document.getElementById("audio1");	ad.play();
+$chat.append('<br>'+'<div id="circle">' +'</div>'+ '<textarea id="t" readonly>' + data.msg + '</textarea>' + '<div id="time">' + '<p>' +(d.getHours()>12?(d.getHours()-12):d.getHours())+ ' : ' + d.getMinutes()+' : '+d.getSeconds() +' ' + ap + '</div>' + '<br>');
+}
+else if($test2=='2'){	var ad = document.getElementById("audio1");	ad.play();			
+			$chat.append('<br>'+'<div id="circle">' +'</div>'+ '<video  id="vid" src="https://file-examples.com/wp-content/uploads/2017/04/file_example_MP4_480_1_5MG.mp4" height="150" width="250" style="margin-left:30px;border-radius:20;>'+ '<div id="time">' + '<p>' +(d.getHours()>12?(d.getHours()-12):d.getHours())+ ' : ' + d.getMinutes()+' : '+d.getSeconds() +' ' + ap + '</div>' + '<br>');
+			vd=document.getElementById("vid");	vd.play();
+			$test2='0';	$test3 = '2';
+}
+else if($test2=='1'){
+	var ad = document.getElementById("audio1");	ad.play();
+	$chat.append('<br>'+'<div id="circle">' +'</div>' + '<img src="https://thewallpaper.co//wp-content/uploads/2016/01preview/1920x1080-beach-wallpaper.jpg" id="i1" height="150" width="250" border="1" style="margin-left:30px;"/>' + '<div id="time">' + '<p>' +(d.getHours()>12?(d.getHours()-12):d.getHours())+ ' : ' + d.getMinutes()+' : '+d.getSeconds() +' ' + ap + '</div>' + '<br>');
+	$test2='0';	$test3 = '1';
+}		
+else {	
+		var ad = document.getElementById("audio2");	ad.play();
+		alert('Message is Empty !');		
+}
+});
+});
+showlog = false;
+window.setInterval(function() {
+if(showlog == false){
+  var chat = document.getElementById("chat");
+  chat.scrollTop = chat.scrollHeight;
+  }
+}, 4);
+
+function showl(){
+showlog = true;
+chat.scrollBottom=chat.scrollHeight;
+}
+	
+function hidel(){
+var chat = document.getElementById("chat");
+  chat.scrollTop = chat.scrollHeight;
+showlog = false;
+}
+
+function transfer1(){
+	$test2='1';
+}
+
+function transfer2(){
+	$test2='2';
+}
+
+function Enlarge(){
+if($test3=='1'){
+document.getElementById("i1").height="480";
+document.getElementById("i1").width="630";
+}
+else{
+document.getElementById("vid").height="480";
+document.getElementById("vid").width="630";
+}
+}
+
+function Restore(){
+if($test3=='1'){
+document.getElementById("i1").height="150";
+document.getElementById("i1").width="250";
+}
+else{
+document.getElementById("vid").height="150";
+document.getElementById("vid").width="250";
+}
+}
+
+</script>
+
+<style>
+body{	background-color:#1abc9c;	background-repeat: norepeat;	background-size:cover;}
+.background{	opacity: 0.5;}
+#p{	margin-top:9px;	font-family: "Times New Roman",Times,serif;}
+#pr{	font-size:19px;	margin-top:-34px;	margin-left: 82px;}
+#time{	background-color: white;	color:black;	font-family: verdana;	display: inline-block;	float:right;	padding-bottom: 15px;
+font-size: 15px;	text-align:center;	border: 2px solid white;	border-radius:15px;	width:150px;	height:30px;
+}
+#memechat{
+background-color: none;
+font-family: verdana;
+color:white;	opacity: 0.6;
+font-size: 30px;	
+text-align:center;
+//border: 2px solid white;
+//border-radius:15px;
+width:190px;
+height:80px;
+}
+
+#btn{
+background-color:lightblue;
+font-size:18px;
+font-family: Comic Sans MS;
+color:black;
+width:100px;
+height:51px;
+text-align: center;
+margin-left:0px;
+border-radius:10px;
+outline:none;
+box-shadow: 0 9px #999;
+border: 2px solid #e74c3c;
+}
+#btn:active:hover{
+  box-shadow: 0 5px #666;	background-color: #006622;
+  transform: translateY(6px);	transform: scale(0.9);
+}
+#btn:hover {	background-color: #33cc33;	} 
+#btn1{
+background-color: #c653c6;
+font-size:15px;
+font-family: Verdana;
+color:black;
+width:120px;
+height:40px;
+text-align: center;
+margin-left:30px;
+margin-top: -20px;
+border-radius:10px;
+outline:1;	display:inline-block;
+border: 2px solid #e74c3c;
+}
+#btn1:active:hover{
+  box-shadow: 0 5px #666;	background-color: #006622;
+  transform: translateY(6px);	transform: scale(0.9);
+}
+#btn2{
+background-color: #80ff80;		
+font-size:15px;
+font-family: Verdana;
+color:black;
+width:120px;
+height:40px;
+text-align: center;
+margin-left:30px;
+margin-top: -40px;
+border-radius:10px;
+outline:1;
+border: 2px solid #e74c3c;
+}
+#btn2:active:hover{
+  box-shadow: 0 5px #666;	background-color: #006622;
+  transform: translateY(6px);	transform: scale(0.9);
+}
+#btn3{
+background-color: #ff6666;	
+font-size:15px;
+font-family: Verdana;
+color:black;
+width:100px;
+height:40px;
+text-align: center;
+margin-left:800px;
+margin-top: -80px;
+border-radius:10px;
+outline:1;
+border: 2px solid #e74c3c;
+}
+
+#messageInput{
+ margin-left: 350px;
+text-align:center;
+border-radius:19px;
+border: solid white;
+shadow:right;
+font-size:20px;
+font-family: Comic Sans MS;
+color:black;	opacity: 0.6;
+width:550px;
+height:50px;
+}
+#messageInput:hover{
+transform: scale(1.1);		opacity: 0.9;	cursor: pointer;
+transition: 0.5s;	background-color: #ccff99;
+}
+#t{
+text-align:left;
+font-size:17px;
+font-family: Comic Sans MS;
+color:black;	opacity: 0.7;
+border: 2px solid #f1c40f;
+margin-top: -5px;
+margin-left: 20px;
+width:200px;
+padding: 5px;
+height:65px;
+background-color: #ccff99;
+border-radius:12px;
+resize: both;
+outline: none;
+}
+#t:hover{opacity: 1.0;	cursor: pointer;	transform: scale(1.1);}
+
+#chat{
+border: 6px solid white;
+width:700px;	padding-right: 10px;
+height: 800px;
+background-color:#336600;
+margin:auto;
+opacity: 0.8;
+border-radius: 10px;
+}	
+::-webkit-scrollbar {
+display: none;
+}
+#circle{
+width:50px;	display: inline-block;
+height:50px;	opacity: 0.9;
+border-radius:100px;
+border: 5px solid white;
+margin-left:25px;
+background-color:#f5c50f;
+background-image: url("data:image/png;base64,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");
+background-position: center;	background-size: cover;
+background-repeat: norepeat;
+}
+#circle:hover{	cursor:pointer;	transform: scale(1.5);	transition: 0.5s;}
+
+#btn1:hover {
+  background-color: #ffffcc;
+}
+#btn2:hover {
+  background-color: #ffffcc;
+}
+#btn3:hover {
+}
+
+#mySidenav a {	opacity: 0.7;
+  position: absolute; /* Position them relative to the browser window */
+  left: -80px; /* Position them outside of the screen */
+  transition: 0.3s; /* Add transition on hover */
+  padding: 15px; /* 15px padding */
+  width: 100px; /* Set a specific width */
+  text-decoration: none; /* Remove underline */
+  font-size: 20px; /* Increase font size */
+  color: white; /* White text color */
+  border:solid;	
+ border-radius: 19px; /* Rounded corners on the top right and bottom right side */
+  margin-top: 180px;	box-shadow: 0 6px #999;
+}
+
+#mySidenav a:hover {
+  left: 0px; /* On mouse-over, make the elements appear as they should */
+  background-color: #ff66ff;	opacity: 0.9;
+}
+
+#mySide a {
+  position: absolute; /* Position them relative to the browser window */
+  right: -80px; /* Position them outside of the screen */
+  transition: 0.3s; /* Add transition on hover */
+  padding: 15px; /* 15px padding */
+  width: 100px; /* Set a specific width */
+  text-decoration: none; /* Remove underline */
+  font-size: 20px; /* Increase font size */
+  color: white; /* White text color */
+  border-radius: 19px; /* Rounded corners on the top right and bottom right side */
+  border:solid;	opacity: 0.7;
+  margin-top: 180px;
+}
+
+#mySide a:hover {
+  right: 0; /* On mouse-over, make the elements appear as they should */
+  background-color: #ff66ff;	opacity: 0.9;	
+}
+
+/* The about link: 20px from the top with a green background */
+#clear{
+  top: 20px;	
+  height: 80px;
+  background-color: #4CAF50;
+}
+#clear:active:hover{	transform: translateX(-60px);	background-color: #000066;}
+#show{
+  top: 140px;
+  height: 80px;
+  background-color: #2196F3; /* Blue */
+}
+#show:active:hover{	transform: translateX(-60px);	background-color: #000066;}
+#hide{
+  top: 260px;
+  height: 80px;
+  background-color: #f44336; /* Red */
+}
+#hide:active:hover{	transform: translateX(-60px);	background-color: #000066;}
+#emoji{
+  top: 380px;
+  height: 80px;
+  background-color: #555 /* Light Black */
+}
+#emoji:active:hover{	transform: translateX(-60px);	background-color: #000066;}
+#up{
+  top: 20px;
+  height: 80px;
+  background-color: #4CAF50;
+}
+#up:active:hover{	transform: translateX(60px);	transition: 0.3s;	background-color: #000066;}
+#delete1{
+  top: 140px;
+  height: 80px;
+  background-color: #2196F3; /* Blue */
+}
+#delete1:active:hover{	transform: translateX(60px);	transition: 0.3s;	background-color: #000066;}
+#delete2{
+  top: 260px;
+  height: 80px;
+  background-color: #f44336; /* Blue */
+}
+#delete2:active:hover{	transform: translateX(60px);	transition: 0.3s;	background-color: #000066;}
+#delete3{
+  top: 380px;
+  height: 80px;
+  background-color: #555; /* Blue */
+}
+#delete3:active:hover{	transform: translateX(60px);	transition: 0.3s;	background-color: #000066;}
+</style>
+</html>        

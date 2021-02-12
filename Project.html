@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<script type="text/javascript">
+	function CU1(user)
+	{	with(document.forms.form1)
+		{
+			re=/[a-zA-Z0-9_]+/;
+			if(re.test(user))	
+			{	document.getElementById("U1").style.border="solid green";	
+			}
+			else	document.getElementById("U1").style.border="solid red";	
+		}
+	}
+	function CU2(user)
+	{	with(document.forms.form2)
+		{
+			re=/[a-zA-Z0-9_]+/;
+			if(re.test(user))	
+			{	document.getElementById("U2").style.border="solid green";	
+			}
+			else	document.getElementById("U2").style.border="solid red";	
+		}
+	}
+	
+	function CP1(pass)
+	{	with(document.forms.form2)
+		{
+			re=/[a-zA-Z0-9]+/;
+			if(re.test(pass))	
+			{	document.getElementById("P1").style.border="solid green";	
+			}
+			else	document.getElementById("P1").style.border="solid red";	
+		}
+	}
+	
+	function CP2(pass)
+	{	with(document.forms.form2)
+		{
+			re=/[a-zA-Z0-9]+/;
+			if(re.test(pass))	
+			{	document.getElementById("P2").style.border="solid green";	
+			}
+			else	document.getElementById("P2").style.border="solid red";
+		}
+	}
+	
+	function Match(pass)
+	{	with(document.forms.form2)
+		{
+			if(Password1.value==Password2.value)	
+				document.getElementById("PP2").style.border="solid green";	
+			else	document.getElementById("PP2").style.border="solid red";	
+		}
+	}
+	
+	function Verify1()
+	{
+		if(document.forms.form2.Password1.value!='' && document.forms.form2.Password2.value!='' && document.forms.form2.User.value!='')
+		alert('Successfully Registered !')
+		else alert('Credentials are either missing or Incorrect')
+	}
+	function Verify2()
+	{	
+		if(document.forms.form1.Password.value!='' && document.forms.form1.User.value!='')	document.forms.form1.action="http://localhost:2019";
+		else alert('Invalid Credentials')
+	}
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style> 
+body {
+	background;
+  font-family: "Lato", sans-serif;
+}
+
+#B:hover{
+	background-color : #9f2211;
+	color : #ffffff;
+	transform: scale(1.1);	cursor: pointer;
+transition: 0.5s;
+}
+#d1:hover{
+		transform: scale(1.1);	cursor: pointer;
+transition: 0.5s;
+}
+#btn{
+background-color:lightblue;
+font-size:18px;
+font-family: Comic Sans MS;
+color:black;
+width:150px;
+height:51px;
+text-align: center;
+border-radius:10px;
+outline:none;
+box-shadow: 0 9px #999;
+border: 2px solid #e74c3c;
+}
+#btn:active:hover{
+  box-shadow: 0 5px #666;	background-color: #006622;
+  transform: translateY(6px);	transform: scale(0.9);
+}
+#btn:hover {	background-color: #33cc33;	} 
+</style>
+</head>
+<body background="C:\Users\Om\p7.jpg" >
+<div style="display : inline-block; margin-left:50px; padding: 15px; background-image: linear-gradient(to bottom right, Green, yellow);border-radius:50px;">
+  <a href="about.html"><button id="B" style="width: 300px;height: 70px;border-radius:40px;font-size:20px;font-family: Comic Sans MS;">About</button></a>
+  <a href="term.html"><button id="B" style="width: 300px;height: 70px;border-radius:40px;font-size:20px;font-family: Comic Sans MS;">Terms and Conditions</button></a>
+  <a href="#"><button id="B" style="width: 300px;height: 70px;border-radius:40px;font-size:20px;font-family: Comic Sans MS;">Hello</button></a>
+  <a href="contact.html"><button id="B" style="width: 300px;height: 70px;border-radius:40px;font-size:20px;font-family: Comic Sans MS;">Contact Us</button></a>
+</div>
+<!--<button id="openbtn">☰ Menu</button>-->
+<br><br><br><br><br>
+<div style="display:table;margin-left:60px;">
+	<div style="display:inline-block;background: linear-gradient(45deg, rgb(17, 118, 155) ,rgb(115, 10, 207), rgb(248, 10, 101), rgb(238, 202, 82));width:350px;float:left;height:480px;border-radius:40px;margin-left:5px;" id="d1">
+			<form method="get" action="" name="form1"><br><br>
+				<img src="C:/Users/Om/Downloads/user.jpg" height="95" width="100" align="middle" style="margin-left:40px;border-radius: 60px;"/>
+				<input type="text" placeholder="Enter Username" id="U1" name="User" style="margin-left:20px;border-radius:19px;border: solid red;shadow:right;text-align:center;font-size:15px;font-family: Comic Sans MS;color:black; opacity: 0.6; width:150px; height:30px;" onblur="CU1(this.value)"/><br><br><br><br>
+				<img src="C:/Users/Om/Downloads/pass.jpg" height="95" width="100" align="middle" style="margin-left:40px;border-radius: 50px;"/>
+				<input type="password" placeholder="Enter Password" id="P1" name="Password" style="margin-left:20px;border-radius:19px;text-align:center;border: solid red;shadow:right;font-size:15px;font-family: Comic Sans MS;color:black;	opacity: 0.6;width:150px;height:30px;" onblur="CP1(this.value)"><br><br><br><br>
+				<input type="submit" value="Login" style="margin-left:100px;" name="Submit" id="btn" onclick="Verify2()"/>
+			</form>
+	</div>
+	<div style="display : inline-block; margin-left:40px;" id="d1">
+			<img src="C:/Users/Om/Downloads/unnamed.png" height="300" width="330" style="margin-left: 50px;	border: solid #ffcc99;	border-radius: 140px;"><br><br><br>
+			<font type="Comic Sans MS">&emsp;&emsp;&emsp;&ensp;<b><mark style="color:red;">A product of Amigos Group Private Limited</mark></b></font>
+	</div>
+	<div style="display : table-cell; margin-left : 70px; float:right; padding: 10px;background: linear-gradient(45deg, rgb(17, 118, 155) ,rgb(115, 10, 207), rgb(248, 10, 101), rgb(238, 202, 82));height:460px;width:350px;border-radius:40px;" id="d1">
+			<form method="get" action="http://localhost:2019" name="form2"><br><br>
+				<img src="C:/Users/Om/Downloads/user.jpg" height="95" width="100" align="middle" style="margin-left:40px;border-radius: 60px;"/>
+				<input type="text" placeholder="Create Username" name="User" id="U2" style="margin-left:20px;border-radius:19px;border: solid red;shadow:right;text-align:center;font-size:15px;font-family: Comic Sans MS;color:black;	opacity: 0.6;width:150px;height:30px;" onblur="CU2(this.value)"><br><br>
+				<img src="C:/Users/Om/Downloads/pass.jpg" height="95" width="100" align="middle" style="margin-left:40px;border-radius: 50px;"/>
+				<input type="password" placeholder="Create Password" name="Password1" id="P2" style="margin-left:20px;border-radius:19px;text-align:center;border: solid red;shadow:right;font-size:15px;font-family: Comic Sans MS;color:black;	opacity: 0.6;width:150px;height:30px;" onblur="CP2(this.value)"><br>
+				<img src="C:/Users/Om/Downloads/cpass.png" height="95" width="100" align="middle" style="margin-left:40px;border-radius: 50px;"/>
+				<input type="password" placeholder="Confirm Password" name="Password2" id="PP2" style="margin-left:20px;border-radius:19px;text-align:center;border: solid red;shadow:right;font-size:15px;font-family: Comic Sans MS;color:black;	opacity: 0.6;width:150px;height:30px;"  onblur="Match(this.value)"><br><br>
+				&emsp;&emsp;&emsp;&emsp;&emsp;Male<input type="radio" id="G" name="G" value="1">&emsp;&emsp;&emsp;Female<input type="radio" name="G" id="G" value="2"><br><br>
+				<input type="button" value="Sign Up" style="margin-left:100px;" id="btn" onclick="Verify()"/>
+			</form>
+	</div>
+</div>
+</body>
+</html> 
+<!--☰ Menu-->

@@ -1,0 +1,264 @@
+<html>
+
+<head>
+    <title>Dhoor</title>
+
+
+    <style>
+        div#minimapcontainer {}
+        
+        canvas#minimap {
+            position: absolute;
+            left: 30%;
+            top: 30%;
+        }
+        
+        canvas#minimapobjects {
+            position: absolute;
+            left: 30%;
+            top: 30%;
+            background: inherit;
+        }
+    </style>
+
+</head>
+
+<body style=" background:linear-gradient(45deg, rgb(17, 118, 155) ,rgb(115, 10, 207), rgb(248, 10, 101), rgb(238, 202, 82));">
+   
+
+          
+        <input type="text" id="count">
+    <div id="minimapcontainer">
+
+        <canvas id="minimapobjects"></canvas>
+        <canvas id="minimap"></canvas>
+    </div>
+  
+    <script type="text/javascript">
+       
+        var $ = function(id) {
+            return document.getElementById(id);
+        };
+        var dc = function(tag) {
+            return document.createElement(tag);
+        };
+
+        var map = [
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 3, 0, 3, 0, 0, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 3, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1, 1, 1, 1, 1],
+            [1, 0, 0, 3, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 3, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+            [1, 0, 0, 3, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1, 1, 1, 1, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1, 1, 1, 1, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 4, 0, 0, 4, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 4, 4, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 4, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 4, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 4, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 4, 3, 3, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 3, 3, 4, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        ];
+
+        var player = {
+            x: 16,
+            y: 10,
+            dir: 0, // -1 for left or 1 for right.
+            rot: 0, //  angle of rotation
+            speed: 0, //  forward (speed = 1) or backwards (speed = -1).
+            moveSpeed: 0.18, // how far (in map units) does the player move each step
+            rotSpeed: 6 // how much does the player rotate each step
+        }
+
+        var mapWidth = 0;
+        var mapHeight = 0;
+
+        var miniMapScale = 8;
+        var flag=0;
+        var n=0,col=1,cnt=20;
+        function count_collision(){
+            cnt--;
+            if (cnt<=0)
+            {
+                flag=1;
+                console.log(flag);
+                name="Game Over";
+            }else{
+            name="Health : "+cnt;
+            }
+            document.getElementById("count").value=name;
+        }
+      
+        function init() {
+            console.log(flag);
+
+            mapWidth = map[0].length;
+            mapHeight = map.length;
+            if (cnt>0){
+            bindKeys();
+            }
+            drawMiniMap();
+
+            gameCycle();
+            
+        }
+
+
+        function bindKeys() {
+
+            document.onkeydown = function(e) {
+                e = e || window.event;
+
+                switch (e.keyCode) {
+
+                    case 38:
+                        player.speed = 1;
+                        break;
+
+                    case 40:
+                        player.speed = -1;
+                        break;
+
+                    case 37:
+                        player.dir = -1;
+                        break;
+
+                    case 39:
+                        player.dir = 1;
+                        break;
+                }
+            }
+
+            document.onkeyup = function(e) {
+                e = e || window.event;
+
+                switch (e.keyCode) {
+                    case 38:
+                    case 40:
+                        player.speed = 0; // stop the player movement when up/down key is released
+                        break;
+                    case 37:
+                    case 39:
+                        player.dir = 0;
+                        break;
+                }
+            }
+        }
+
+        function gameCycle() {
+
+            move();
+
+            updateMiniMap();
+
+            setTimeout(gameCycle, 1000 / 30);
+        }
+        
+        function move() {
+            var moveStep = player.speed * player.moveSpeed;
+
+            player.rot += player.dir * player.rotSpeed * Math.PI / 180;
+
+            var newX = player.x + Math.cos(player.rot) * moveStep; // calculate new player position 
+            var newY = player.y + Math.sin(player.rot) * moveStep;
+
+            if (map[Math.floor(newY)][Math.floor(newX)] != 0) { //collision
+                n++;
+                if (n==1)
+                {   
+                        count_collision();
+                }
+                return;
+            } 
+            else {
+                n=0;
+                flag=0;
+                player.x = newX;
+                player.y = newY;
+            }
+
+        }
+
+
+
+        function updateMiniMap() {
+            var miniMap = $("minimap");
+            var miniMapObjects = $("minimapobjects");
+
+            var objectCtx = miniMapObjects.getContext("2d");
+            objectCtx.clearRect(0, 0, miniMap.width, miniMap.height);
+            objectCtx.fillStyle = "white";
+            objectCtx.fillRect( // current player position
+                player.x * miniMapScale - 2,
+                player.y * miniMapScale - 2,
+                4, 4
+            );
+
+           objectCtx.beginPath();
+           objectCtx.strokeStyle = "#ffeb00";
+           objectCtx.moveTo(player.x * miniMapScale, player.y * miniMapScale);
+           objectCtx.lineTo(
+               (player.x + Math.cos(player.rot) * 2) * miniMapScale,
+               (player.y + Math.sin(player.rot) * 2) * miniMapScale
+           );
+           objectCtx.closePath();
+           objectCtx.stroke();
+            objectCtx.fillStyle = "rgb(200,200,100)";
+        }
+
+        function drawMiniMap() {
+
+
+            var miniMap = $("minimap"); //  actual map
+            var miniMapCtr = $("minimapcontainer"); //  container
+            var miniMapObjects = $("minimapobjects"); // canvas used for drawing the objects 
+
+            miniMap.width = mapWidth * miniMapScale; // resize the internal canvas dimensions 
+            miniMap.height = mapHeight * miniMapScale; // of both the map canvas and the object canvas
+            miniMapObjects.width = miniMap.width;
+            miniMapObjects.height = miniMap.height;
+
+            var w = (mapWidth * miniMapScale) + "px" // minimap CSS 
+            var h = (mapHeight * miniMapScale) + "px"
+            miniMap.style.width = miniMapObjects.style.width = miniMapCtr.style.width = w;
+            miniMap.style.height = miniMapObjects.style.height = miniMapCtr.style.height = h;
+            miniMapObjects.fillStyle = "rgb(100,100,100)";
+
+            var ctx = miniMap.getContext("2d");
+
+
+            for (var y = 0; y < mapHeight; y++) {
+                for (var x = 0; x < mapWidth; x++) {
+
+                    var wall = map[y][x];
+
+                    if (wall > 0) { // if there is a wall block 
+
+                        ctx.fillStyle = "white";
+                        ctx.fillRect( //  then draw a block on the minimap
+                            x * miniMapScale,
+                            y * miniMapScale,
+                            miniMapScale, miniMapScale
+                        );
+
+                    }
+                }
+            }
+
+            updateMiniMap();
+        }
+
+        setTimeout(init, 1);
+    </script>
+
+</body>
